@@ -1,0 +1,4 @@
+// chatName
+// isGroupChat
+// users
+// groupAdmin
