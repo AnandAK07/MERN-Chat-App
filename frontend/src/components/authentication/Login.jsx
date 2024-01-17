@@ -75,6 +75,42 @@ export const Login = () => {
       })
     }
   }
+
+  const guestHandler = async () => {
+    setLoading(true);
+    try {
+      const data = await fetch(`http://localhost:5000/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: 'guest@example.com', password: '123456' }),
+      })
+      const jsonData = await data.json()
+
+      toast({
+        title: 'Registration Successful',
+        description: "We've created your account for you.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
+
+      localStorage.setItem('user-Info', JSON.stringify(jsonData));
+
+      setLoading(false)
+      navigate('/chats')
+    } catch (error) {
+      setLoading(false)
+      toast({
+        title: 'Registration Successful',
+        description: "We've created your account for you.",
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      })
+    }
+  }
   return (
     <VStack
       spacing={2}
@@ -87,7 +123,7 @@ export const Login = () => {
       <FormControl id='password'>
         <FormLabel>Password</FormLabel>
         <InputGroup>
-          <Input type={show ? 'text' : 'password'} placeholder='Enter Your Password' onChange={(e) => setPassword(e.target.value)} />
+          <Input type={show ? 'text' : 'password'} placeholder='Enter Your Password'  onChange={(e) => setPassword(e.target.value)} />
           <InputRightElement w={'4.5rem'}>
             <Button h={'1.75rem'} size={'sm'} onClick={handleToggle}>
               {show ? 'Hide' : 'Show'}
@@ -99,7 +135,7 @@ export const Login = () => {
       <Button colorScheme='blue' w={'100%'} style={{ marginTop: 10 }} onClick={submitHandler} isLoading={loading}>
         Login Up
       </Button>
-      <Button variant={'solid'} colorScheme='red' w={'100%'} style={{ marginTop: 10 }} onClick={()=>{setEmail("guest@example.com");setPassword("123456")}}>
+      <Button variant={'solid'} colorScheme='red' w={'100%'} style={{ marginTop: 10 }} onClick={guestHandler}>
         Get Guest User Credentials
       </Button>
     </VStack>
