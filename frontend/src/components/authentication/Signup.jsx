@@ -150,6 +150,7 @@ export const Signup = () => {
                 },
                 body: JSON.stringify({ name, email, password, pic }),
             })
+            const jsonData=await data.json()
             // const config = {
             //     headers: {
             //         "Content-Type": "application/json",
@@ -159,7 +160,9 @@ export const Signup = () => {
             // const data = await axios.post(`/api/user`, { name, email, password, pic },
             //     config
             // );
-            console.log(data, "data")
+
+            // console.log(data, "data")
+            // console.log(jsonData)
 
             toast({
                 title: 'Registration Successful',
@@ -169,7 +172,7 @@ export const Signup = () => {
                 isClosable: true,
             })
 
-            localStorage.setItem('user-Info', JSON.stringify(data));
+            localStorage.setItem('user-Info', JSON.stringify(jsonData));
 
             setLoading(false)
             navigate('/chats')
@@ -178,7 +181,7 @@ export const Signup = () => {
             toast({
                 title: 'Registration Successful',
                 description: "We've created your account for you.",
-                status: 'success',
+                status: 'warning',
                 duration: 5000,
                 isClosable: true,
             })
