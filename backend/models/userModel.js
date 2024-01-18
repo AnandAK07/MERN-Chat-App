@@ -1,35 +1,35 @@
-const mongoose=require("mongoose")
+const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
 
 
-const userShema=mongoose.Schema(
+const userShema = mongoose.Schema(
     {
-        name:{type:String,required:true},
-        email:{type:String,required:true,unique:true},
-        password:{type:String,required:true},
-        pic: { type: String, default:`https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg`}
+        name: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        pic: { type: String, default: `https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg` }
     },
     {
-        timestamps:true
+        timestamps: true
     }
 )
 
-userShema.methods.matchPassword=async function (enteredPassword){
-    return await bcrypt.compare(enteredPassword,this.password)
+userShema.methods.matchPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password)
 }
 
-userShema.pre('save',async function(next){
-    if(!this.isModified){
+userShema.pre('save', async function (next) {
+    if (!this.isModified) {
         next()
     }
 
-    const salt=await bcrypt.genSalt(10);
-    this.password=await bcrypt.hash(this.password,salt)
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
 })
 
-const User=mongoose.model("User",userShema)
+const User = mongoose.model("User", userShema)
 
-module.exports={User}
+module.exports = { User }
 // name
 // email
 // password
